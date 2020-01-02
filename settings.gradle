@@ -1,2 +1,2 @@
-include ':main', ':mdc'
+include ':main', ':mdc', ':logger'
 rootProject.name='UNO Codelab'
