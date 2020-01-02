@@ -8,17 +8,21 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.NetworkImageView
 import com.android.volley.toolbox.Volley
+import com.unokim.codelab.logger.Logger
 import com.unokim.codelab.mdc.application.ShrineApplication
 
 /**
  * Class that handles image requests using Volley.
  */
 object ImageRequester {
+    private const val TAG = "ImageRequester"
+
     private val requestQueue: RequestQueue
     private val imageLoader: ImageLoader
     private val maxByteSize: Int
 
     init {
+        Logger.d(TAG, "init")
         val context = ShrineApplication.instance
         requestQueue = Volley.newRequestQueue(context)
         requestQueue.start()
@@ -51,10 +55,12 @@ object ImageRequester {
      * @param url              URL of the image
      */
     fun setImageFromUrl(networkImageView: NetworkImageView, url: String) {
+        Logger.d(TAG, "setImageFromUrl")
         networkImageView.setImageUrl(url, imageLoader)
     }
 
     private fun calculateMaxByteSize(context: Context): Int {
+        Logger.d(TAG, "calculateMaxByteSize")
         val displayMetrics = context.resources.displayMetrics
         val screenBytes = displayMetrics.widthPixels * displayMetrics.heightPixels * 4
         return screenBytes * 3
