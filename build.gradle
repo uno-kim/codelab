@@ -54,4 +54,8 @@ ext {
     lifecycle_version = '2.1.0'
     livedata_version = '2.2.0-rc03'
     room_version = '2.2.3'
+
+    firebase_core_version = '17.2.1'
+    firebase_iid_version = '20.0.2'
+    firebase_messaging_version = '20.1.0'
 }
