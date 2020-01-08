@@ -18,7 +18,6 @@ package com.unokim.codelab.coroutines.main
 
 import com.unokim.codelab.coroutines.util.SkipNetworkInterceptor
 import okhttp3.OkHttpClient
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -42,9 +41,11 @@ fun getNetworkService() = service
 /**
  * Main network interface which will fetch a new welcome title for us
  */
+// add suspend modifier to the existing fetchNextTitle
+// change return type from Call<String> to String
 interface MainNetwork {
     @GET("next_title.json")
-    fun fetchNextTitle(): Call<String>
+    suspend fun fetchNextTitle(): String
 }
 
 

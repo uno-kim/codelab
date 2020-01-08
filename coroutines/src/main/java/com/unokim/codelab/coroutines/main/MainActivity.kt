@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import com.unokim.codelab.coroutines.R
+import com.unokim.codelab.logger.Logger
 
 /**
  * Show layout.activity_main and setup data binding.
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Logger.d(TAG, "onCreate")
 
         setContentView(R.layout.activity_main)
 
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         // update the title when the [MainViewModel.title] changes
         viewModel.title.observe(this) { value ->
             value?.let {
+                Logger.d(TAG, "viewModel.title updated = $it")
                 title.text = it
             }
         }
@@ -82,5 +85,9 @@ class MainActivity : AppCompatActivity() {
                 viewModel.onSnackbarShown()
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

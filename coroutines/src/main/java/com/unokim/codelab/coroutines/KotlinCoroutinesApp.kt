@@ -24,6 +24,7 @@ import androidx.work.NetworkType.UNMETERED
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.unokim.codelab.coroutines.main.RefreshMainDataWork
+import com.unokim.codelab.logger.Logger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -38,6 +39,7 @@ class KotlinCoroutinesApp : Application() {
      */
     override fun onCreate() {
         super.onCreate()
+        Logger.d(TAG, "onCreate")
         setupWorkManagerJob()
     }
 
@@ -45,6 +47,8 @@ class KotlinCoroutinesApp : Application() {
      * Setup WorkManager background job to 'fetch' new network data daily.
      */
     private fun setupWorkManagerJob() {
+        Logger.d(TAG, "setupWorkManagerJob")
+
         // initialize WorkManager with a Factory
         val workManagerConfiguration = Configuration.Builder()
                 .setWorkerFactory(RefreshMainDataWork.Factory())
@@ -67,5 +71,9 @@ class KotlinCoroutinesApp : Application() {
         // work.
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork(RefreshMainDataWork::class.java.name, KEEP, work)
+    }
+
+    companion object {
+        private const val TAG = "KotlinCoroutinesApp"
     }
 }
