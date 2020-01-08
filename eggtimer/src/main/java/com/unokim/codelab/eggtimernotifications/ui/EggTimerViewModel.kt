@@ -18,18 +18,22 @@ package com.unokim.codelab.eggtimernotifications.ui
 
 import android.app.AlarmManager
 import android.app.Application
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.CountDownTimer
 import android.os.SystemClock
 import androidx.core.app.AlarmManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.unokim.codelab.eggtimernotifications.R
 import com.unokim.codelab.eggtimernotifications.receiver.AlarmReceiver
+import com.unokim.codelab.eggtimernotifications.util.cancelNotifications
+import com.unokim.codelab.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -123,9 +127,20 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
                 }
                 val triggerTime = SystemClock.elapsedRealtime() + selectedInterval
 
-                // TODO: Step 1.5 get an instance of NotificationManager and call sendNotification
+//                // TODO: Step 1.5 get an instance of NotificationManager and call sendNotification
+//                val notificationManager = ContextCompat.getSystemService(
+//                    app,
+//                    NotificationManager::class.java
+//                ) as NotificationManager
+//                notificationManager.sendNotification(app.getString(R.string.timer_running), app)
 
                 // TODO: Step 1.15 call cancel notification
+                val notificationManager =
+                    ContextCompat.getSystemService(
+                        app,
+                        NotificationManager::class.java
+                    ) as NotificationManager
+                notificationManager.cancelNotifications()
 
                 AlarmManagerCompat.setExactAndAllowWhileIdle(
                     alarmManager,
@@ -146,10 +161,13 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
      * Creates a new timer
      */
     private fun createTimer() {
+        Logger.d(TAG, "createTimer")
+
         viewModelScope.launch {
             val triggerTime = loadTime()
             timer = object : CountDownTimer(triggerTime, second) {
                 override fun onTick(millisUntilFinished: Long) {
+                    Logger.d(TAG, "timer.onTick()")
                     _elapsedTime.value = triggerTime - SystemClock.elapsedRealtime()
                     if (_elapsedTime.value!! <= 0) {
                         resetTimer()
@@ -157,6 +175,7 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
                 }
 
                 override fun onFinish() {
+                    Logger.d(TAG, "timer.onFinish()")
                     resetTimer()
                 }
             }
@@ -190,4 +209,8 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
         withContext(Dispatchers.IO) {
             prefs.getLong(TRIGGER_TIME, 0)
         }
+
+    companion object {
+        private const val TAG = "EggTimerViewModel"
+    }
 }
