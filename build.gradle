@@ -12,6 +12,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.google.gms:google-services:4.3.3'  // Google Services plugin
     }
 }
 
@@ -58,4 +59,5 @@ ext {
     firebase_core_version = '17.2.1'
     firebase_iid_version = '20.0.2'
     firebase_messaging_version = '20.1.0'
+    firebase_analytics_version = '17.2.1'
 }

@@ -25,9 +25,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.messaging.FirebaseMessaging
 import com.unokim.codelab.eggtimernotifications.R
 import com.unokim.codelab.eggtimernotifications.databinding.FragmentEggTimerBinding
 
@@ -54,6 +56,13 @@ class EggTimerFragment : Fragment() {
             getString(R.string.egg_notification_channel_id),
             getString(R.string.egg_notification_channel_name)
         )
+        // TODO: Step 3.1 create a new channel for FCM
+        createChannel(
+            getString(R.string.breakfast_notification_channel_id),
+            getString(R.string.breakfast_notification_channel_name)
+        )
+        // TODO: Step 3.4 call subscribe topics on start
+        subscribeTopic()
 
         return binding.root
     }
@@ -82,6 +91,20 @@ class EggTimerFragment : Fragment() {
         }
         // TODO: Step 1.6 END create channel
 
+    }
+
+    // TODO: Step 3.3 subscribe to breakfast topic
+    private fun subscribeTopic() {
+        // [START subscribe_topic]
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+            .addOnCompleteListener { task ->
+                var message = getString(R.string.message_subscribed)
+                if (!task.isSuccessful) {
+                    message = getString(R.string.message_subscribe_failed)
+                }
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        // [END subscribe_topics]
     }
 
     companion object {
