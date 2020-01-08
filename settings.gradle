@@ -1,2 +1,2 @@
-include ':main', ':mdc', ':logger', ':coroutines', ':eggtimer'
+include ':main', ':mdc', ':logger', ':coroutines', ':eggtimer', ':customfancontroller'
 rootProject.name='UNO Codelab'
