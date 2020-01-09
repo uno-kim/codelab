@@ -1,2 +1,11 @@
-include ':main', ':mdc', ':logger', ':coroutines', ':eggtimer', ':customfancontroller', ':diceroller', ':androidtrivia', ':aboutme', ':colormyviews'
-rootProject.name='UNO Codelab'
+include ':main',
+        ':mdc',
+        ':logger',
+        ':coroutines',
+        ':eggtimer',
+        ':customfancontroller',
+        ':diceroller',
+        ':androidtrivia',
+        ':aboutme',
+        ':colormyviews'
+rootProject.name = 'UNO Codelab'
