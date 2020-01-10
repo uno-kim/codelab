@@ -2,14 +2,13 @@ package com.unokim.codelab.trackmysleepquality.sleeptracker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.unokim.codelab.trackmysleepquality.database.SleepNight
-import com.unokim.codelab.trackmysleepquality.databinding.ListItemSleepNightLinearBinding
+import com.unokim.codelab.trackmysleepquality.databinding.ListItemSleepNightGridBinding
 
-class SleepNightAdapter :
-    ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
+class SleepNightGridAdapter :
+    ListAdapter<SleepNight, SleepNightGridAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -20,7 +19,7 @@ class SleepNightAdapter :
         holder.bind(item)
     }
 
-    class ViewHolder private constructor(private val binding: ListItemSleepNightLinearBinding) :
+    class ViewHolder private constructor(private val binding: ListItemSleepNightGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: SleepNight) {
@@ -33,19 +32,9 @@ class SleepNightAdapter :
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemSleepNightLinearBinding.inflate(layoutInflater, parent, false)
+                val binding = ListItemSleepNightGridBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
-    }
-}
-
-class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
-    override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
-        return oldItem.nightId == newItem.nightId
-    }
-
-    override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
-        return oldItem == newItem
     }
 }
