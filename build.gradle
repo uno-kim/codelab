@@ -63,4 +63,5 @@ ext {
     firebase_iid_version = '20.0.2'
     firebase_messaging_version = '20.1.0'
     firebase_analytics_version = '17.2.1'
+    timber_version = '4.7.1'
 }

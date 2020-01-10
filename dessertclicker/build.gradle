@@ -36,5 +36,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$testExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
+    implementation "com.jakewharton.timber:timber:$timber_version"
     implementation project(path: ':logger')
 }
