@@ -61,5 +61,6 @@ dependencies {
     // optional - Test helpers
     androidTestImplementation "androidx.work:work-testing:$work_version"
 
+    implementation "com.jakewharton.timber:timber:$timber_version"
     implementation project(path: ':logger')
 }
