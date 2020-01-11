@@ -54,6 +54,9 @@ ext {
     work_version = '2.2.0'
     retrofit_gson_version = '2.7.1'
     retrofit_version = '2.7.1'
+    moshi_version = '1.9.2'
+    retrofit_coroutines_adapter_version = "0.9.2"
+
     lifecycle_version = '2.1.0'
     livedata_version = '2.2.0-rc03'
     room_version = '2.2.3'
