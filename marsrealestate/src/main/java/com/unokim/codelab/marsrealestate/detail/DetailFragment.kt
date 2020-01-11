@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.unokim.codelab.marsrealestate.databinding.FragmentDetailBinding
 
 /**
@@ -31,11 +32,16 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        @Suppress("UNUSED_VARIABLE")
-        val application = requireNotNull(activity).application
+        val application = requireActivity().application
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
+
+        val marsProperty = DetailFragmentArgs.fromBundle(requireArguments()).selectedProperty
+        val viewModelFactory = DetailViewModelFactory(marsProperty, application)
+        binding.viewModel = ViewModelProviders.of(
+            this, viewModelFactory
+        ).get(DetailViewModel::class.java)
+
         return binding.root
     }
 }
