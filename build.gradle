@@ -55,6 +55,7 @@ ext {
     retrofit_gson_version = '2.7.1'
     retrofit_version = '2.7.1'
     moshi_version = '1.9.2'
+    glide_version = '4.11.0'
 
     lifecycle_version = '2.1.0'
     livedata_version = '2.2.0-rc03'
