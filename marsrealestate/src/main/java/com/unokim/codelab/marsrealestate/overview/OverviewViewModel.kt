@@ -20,10 +20,8 @@ package com.unokim.codelab.marsrealestate.overview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.unokim.codelab.marsrealestate.network.MarsApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
@@ -38,10 +36,6 @@ class OverviewViewModel : ViewModel() {
     val response: LiveData<String>
         get() = _response
 
-    private var viewModelJob = Job()
-
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
     /**
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
      */
@@ -53,20 +47,14 @@ class OverviewViewModel : ViewModel() {
      * Sets the value of the status LiveData to the Mars API status.
      */
     private fun getMarsRealEstateProperties() {
-        coroutineScope.launch {
-            val getPropertiesDeferred = MarsApi.retrofitService.getProperties()
+        viewModelScope.launch {
             try {
-                val listResult = getPropertiesDeferred.await()
+                val listResult = MarsApi.retrofitService.getProperties()
                 _response.value =
                     "Success: ${listResult.size} Mars properties retrieved"
-            } catch (e: Exception) {
-                _response.value = "Failure: ${e.message}"
+            } catch (cause: Throwable) {
+                _response.value = "Failure: $cause"
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }
