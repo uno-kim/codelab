@@ -51,7 +51,7 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
 
     private val alarmManager = app.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     private var prefs =
-        app.getSharedPreferences("com.example.android.eggtimernotifications", Context.MODE_PRIVATE)
+        app.getSharedPreferences("com.unokim.codelab.eggtimernotifications", Context.MODE_PRIVATE)
     private val notifyIntent = Intent(app, AlarmReceiver::class.java)
 
     private val _timeSelection = MutableLiveData<Int>()

@@ -1,4 +1,5 @@
 include ':main',
+        ':gdgfinder',
         ':devbyteviewer',
         ':marsrealestate',
         ':trackmysleepquality',
