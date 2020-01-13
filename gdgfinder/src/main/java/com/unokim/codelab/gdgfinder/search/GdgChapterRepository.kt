@@ -24,13 +24,7 @@ import com.unokim.codelab.gdgfinder.network.GdgResponse
 import com.unokim.codelab.gdgfinder.network.LatLong
 import kotlinx.coroutines.*
 
-class GdgChapterRepository(gdgApiService: GdgApiService) {
-
-    /**
-     * A single network request, the results won't change. For this lesson we did not add an offline cache for simplicity
-     * and the result will be cached in memory.
-     */
-    private val request = gdgApiService.getChapters()
+class GdgChapterRepository(private val gdgApiService: GdgApiService) {
 
     /**
      * An in-progress (or potentially completed) sort, this may be null or cancelled at any time.
@@ -106,7 +100,7 @@ class GdgChapterRepository(gdgApiService: GdgApiService) {
         // complete.
         val result = coroutineScope {
             // launch a new coroutine to do the sort (so other requests can wait for this sort to complete)
-            val deferred = async { SortedData.from(request.await(), location) }
+            val deferred = async { SortedData.from(gdgApiService.getChapters(), location) }
             // cache the Deferred so any future requests can wait for this sort
             inProgressSort = deferred
             // and return the result of this sort

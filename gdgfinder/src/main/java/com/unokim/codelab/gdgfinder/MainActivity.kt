@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         setupNavigation()
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_UNSPECIFIED)
     }
 
     /**

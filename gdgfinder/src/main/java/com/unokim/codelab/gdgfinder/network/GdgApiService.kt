@@ -20,7 +20,6 @@ package com.unokim.codelab.gdgfinder.network
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -34,9 +33,7 @@ interface GdgApiService {
     @GET("gdg-directory.json")
 //    @GET("directory.json")
 
-    fun getChapters():
-    // The Coroutine Call Adapter allows us to return a Deferred, a Job with a result
-            Deferred<GdgResponse>
+    suspend fun getChapters(): GdgResponse
 }
 
 private val moshi = Moshi.Builder()
