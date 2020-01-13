@@ -49,7 +49,7 @@ class EggTimerFragment : Fragment() {
         val viewModel = ViewModelProviders.of(this).get(EggTimerViewModel::class.java)
 
         binding.eggTimerViewModel = viewModel
-        binding.lifecycleOwner = this.viewLifecycleOwner
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // TODO: Step 1.7 call create channel
         createChannel(

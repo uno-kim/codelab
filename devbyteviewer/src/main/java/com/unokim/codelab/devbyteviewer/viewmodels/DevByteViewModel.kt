@@ -18,9 +18,8 @@ package com.unokim.codelab.devbyteviewer.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.unokim.codelab.devbyteviewer.domain.DevByteVideo
-import com.unokim.codelab.devbyteviewer.network.DevByteNetwork
-import com.unokim.codelab.devbyteviewer.network.asDomainModel
+import com.unokim.codelab.devbyteviewer.database.getDatabase
+import com.unokim.codelab.devbyteviewer.repository.VideosRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -40,6 +39,11 @@ import java.io.IOException
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
 
     /**
+     * The data source this ViewModel will fetch results from.
+     */
+    private val videosRepository = VideosRepository(getDatabase(application))
+
+    /**
      * This is the job for all coroutines started by this ViewModel.
      *
      * Cancelling this job will cancel all coroutines started by this ViewModel.
@@ -55,18 +59,9 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     /**
-     * A playlist of videos that can be shown on the screen. This is private to avoid exposing a
-     * way to set this value to observers.
+     * A playlist of videos displayed on the screen.
      */
-    private val _playlist = MutableLiveData<List<DevByteVideo>>()
-
-    /**
-     * A playlist of videos that can be shown on the screen. Views should use this to get access
-     * to the data.
-     */
-    val playlist: LiveData<List<DevByteVideo>>
-        get() = _playlist
-
+    val playlist = videosRepository.videos
 
     /**
      * Event triggered for network error. This is private to avoid exposing a
@@ -98,7 +93,7 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
      * init{} is called immediately when this ViewModel is created.
      */
     init {
-        refreshDataFromNetwork()
+        refreshDataFromRepository()
     }
 
     /**
@@ -108,9 +103,6 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
     private fun refreshDataFromNetwork() = viewModelScope.launch {
 
         try {
-            val playlist = DevByteNetwork.devbytes.getPlaylist()
-            _playlist.postValue(playlist.asDomainModel())
-
             _eventNetworkError.value = false
             _isNetworkErrorShown.value = false
 
@@ -127,6 +119,24 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
         _isNetworkErrorShown.value = true
     }
 
+    /**
+     * Refresh data from the repository. Use a coroutine launch to run in a
+     * background thread.
+     */
+    private fun refreshDataFromRepository() {
+        viewModelScope.launch {
+            try {
+                videosRepository.refreshVideos()
+                _eventNetworkError.value = false
+                _isNetworkErrorShown.value = false
+
+            } catch (networkError: IOException) {
+                // Show a Toast error message and hide the progress bar.
+                if (playlist.value!!.isEmpty())
+                    _eventNetworkError.value = true
+            }
+        }
+    }
 
     /**
      * Cancel all coroutines when the ViewModel is cleared

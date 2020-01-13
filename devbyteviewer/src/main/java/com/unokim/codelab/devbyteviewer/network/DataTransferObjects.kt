@@ -17,6 +17,7 @@
 package com.unokim.codelab.devbyteviewer.network
 
 import com.squareup.moshi.JsonClass
+import com.unokim.codelab.devbyteviewer.database.DatabaseVideo
 import com.unokim.codelab.devbyteviewer.domain.DevByteVideo
 
 /**
@@ -58,6 +59,21 @@ data class NetworkVideo(
 fun NetworkVideoContainer.asDomainModel(): List<DevByteVideo> {
     return videos.map {
         DevByteVideo(
+            title = it.title,
+            description = it.description,
+            url = it.url,
+            updated = it.updated,
+            thumbnail = it.thumbnail
+        )
+    }
+}
+
+/**
+ * Convert Network results to database objects
+ */
+fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
+    return videos.map {
+        DatabaseVideo(
             title = it.title,
             description = it.description,
             url = it.url,
