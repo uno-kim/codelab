@@ -2,12 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.unokim.codelab.coroutines"
+        applicationId "com.unokim.codelab.advancedcoroutines"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
@@ -38,6 +39,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    implementation "androidx.legacy:legacy-support-v4:$legacy_version"
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$testExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
@@ -47,6 +49,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -61,9 +65,15 @@ dependencies {
     // optional - Test helpers
     androidTestImplementation "androidx.work:work-testing:$work_version"
 
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_gson_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
-    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    implementation "com.jakewharton.timber:timber:$timber_version"
     implementation project(path: ':logger')
 }
