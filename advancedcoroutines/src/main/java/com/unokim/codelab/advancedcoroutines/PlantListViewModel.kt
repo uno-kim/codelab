@@ -17,8 +17,13 @@
 package com.unokim.codelab.advancedcoroutines
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * The [ViewModel] for fetching a list of [Plant]s.
@@ -60,15 +65,56 @@ class PlantListViewModel internal constructor(
      */
     val plants: LiveData<List<Plant>> = growZone.switchMap { growZone ->
         if (growZone == NoGrowZone) {
+            Timber.i("plantRepository.plants")
             plantRepository.plants
         } else {
+            Timber.i("plantRepository.getPlantsWithGrowZone(growZone)")
             plantRepository.getPlantsWithGrowZone(growZone)
         }
     }
 
+    @ExperimentalCoroutinesApi
+    private val growZoneChannel = ConflatedBroadcastChannel<GrowZone>()
+
+    // val plantsUsingFlow: LiveData<List<Plant>> = plantRepository.plantsFlow.asLiveData()
+    @ExperimentalCoroutinesApi
+    @FlowPreview
+    val plantsUsingFlow: LiveData<List<Plant>> = growZoneChannel.asFlow()
+        .flatMapLatest { growZone ->
+            if (growZone == NoGrowZone) {
+                plantRepository.plantsFlow
+            } else {
+                plantRepository.getPlantsWithGrowZoneFlow(growZone)
+            }
+        }.asLiveData()
+
     init {
         // When creating a new ViewModel, clear the grow zone and perform any related udpates
         clearGrowZoneNumber()
+
+        growZoneChannel.asFlow()
+            .mapLatest { growZone ->
+                Timber.i("_spinner.value = true")
+                _spinner.value = true
+                if (growZone == NoGrowZone) {
+                    plantRepository.tryUpdateRecentPlantsCache()
+                } else {
+                    plantRepository.tryUpdateRecentPlantsForGrowZoneCache(growZone)
+                }
+            }
+            .onEach {
+                Timber.i("onEach, _spinner.value = false")
+                _spinner.value = false
+            }
+//            .onCompletion {
+//                Timber.i("onCompletion, _spinner.value = false")
+//                _spinner.value = false
+//            }
+            .catch { throwable ->
+                Timber.i("throwable.message = ${throwable.message}")
+                _snackbar.value = throwable.message
+            }
+            .launchIn(viewModelScope)
     }
 
     /**
@@ -79,9 +125,11 @@ class PlantListViewModel internal constructor(
      */
     fun setGrowZoneNumber(num: Int) {
         growZone.value = GrowZone(num)
+        growZoneChannel.offer(GrowZone(num))
 
-        // initial code version, will move during flow rewrite
-        launchDataLoad { plantRepository.tryUpdateRecentPlantsCache() }
+//        launchDataLoad {
+//            plantRepository.tryUpdateRecentPlantsForGrowZoneCache(GrowZone(num))
+//        }
     }
 
     /**
@@ -92,9 +140,11 @@ class PlantListViewModel internal constructor(
      */
     fun clearGrowZoneNumber() {
         growZone.value = NoGrowZone
+        growZoneChannel.offer(NoGrowZone)
 
-        // initial code version, will move during flow rewrite
-        launchDataLoad { plantRepository.tryUpdateRecentPlantsCache() }
+//        launchDataLoad {
+//            plantRepository.tryUpdateRecentPlantsCache()
+//        }
     }
 
     /**

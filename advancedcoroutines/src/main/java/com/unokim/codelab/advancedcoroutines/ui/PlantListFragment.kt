@@ -29,6 +29,7 @@ import com.unokim.codelab.advancedcoroutines.PlantRepository
 import com.unokim.codelab.advancedcoroutines.R
 import com.unokim.codelab.advancedcoroutines.databinding.FragmentPlantListBinding
 import com.unokim.codelab.advancedcoroutines.utils.Injector
+import timber.log.Timber
 
 class PlantListFragment : Fragment() {
 
@@ -80,7 +81,12 @@ class PlantListFragment : Fragment() {
     }
 
     private fun subscribeUi(adapter: PlantAdapter) {
-        viewModel.plants.observe(viewLifecycleOwner) { plants ->
+        Timber.i("subscribeUi")
+//        viewModel.plants.observe(viewLifecycleOwner) { plants ->
+//            adapter.submitList(plants)
+//        }
+        viewModel.plantsUsingFlow.observe(viewLifecycleOwner) { plants ->
+            Timber.i("updated")
             adapter.submitList(plants)
         }
     }
