@@ -71,6 +71,9 @@ dependencies {
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
+    // Retrofit Coroutines Support
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
     // Client for retrieving location
