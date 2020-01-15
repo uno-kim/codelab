@@ -17,7 +17,6 @@
 package com.unokim.codelab.paging.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -25,11 +24,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.unokim.codelab.paging.Injection
 import com.unokim.codelab.paging.R
 import com.unokim.codelab.paging.model.Repo
 import kotlinx.android.synthetic.main.activity_search_repositories.*
+import timber.log.Timber
 
 class SearchRepositoriesActivity : AppCompatActivity() {
 
@@ -47,7 +48,7 @@ class SearchRepositoriesActivity : AppCompatActivity() {
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         list.addItemDecoration(decoration)
-        setupScrollListener()
+//        setupScrollListener()
 
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
@@ -62,8 +63,8 @@ class SearchRepositoriesActivity : AppCompatActivity() {
 
     private fun initAdapter() {
         list.adapter = adapter
-        viewModel.repos.observe(this, Observer<List<Repo>> {
-            Log.d("Activity", "list: ${it?.size}")
+        viewModel.repos.observe(this, Observer<PagedList<Repo>> {
+            Timber.d("list: ${it?.size}")
             showEmptyList(it?.size == 0)
             adapter.submitList(it)
         })
@@ -113,24 +114,24 @@ class SearchRepositoriesActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupScrollListener() {
-        val layoutManager = list.layoutManager as androidx.recyclerview.widget.LinearLayoutManager
-        list.addOnScrollListener(object :
-            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
-            override fun onScrolled(
-                recyclerView: androidx.recyclerview.widget.RecyclerView,
-                dx: Int,
-                dy: Int
-            ) {
-                super.onScrolled(recyclerView, dx, dy)
-                val totalItemCount = layoutManager.itemCount
-                val visibleItemCount = layoutManager.childCount
-                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-
-                viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
-            }
-        })
-    }
+//    private fun setupScrollListener() {
+//        val layoutManager = list.layoutManager as androidx.recyclerview.widget.LinearLayoutManager
+//        list.addOnScrollListener(object :
+//            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+//            override fun onScrolled(
+//                recyclerView: androidx.recyclerview.widget.RecyclerView,
+//                dx: Int,
+//                dy: Int
+//            ) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val totalItemCount = layoutManager.itemCount
+//                val visibleItemCount = layoutManager.childCount
+//                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+//
+//                viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
+//            }
+//        })
+//    }
 
     companion object {
         private const val LAST_SEARCH_QUERY: String = "last_search_query"

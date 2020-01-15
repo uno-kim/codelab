@@ -16,7 +16,7 @@
 
 package com.unokim.codelab.paging.db
 
-import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -39,5 +39,5 @@ interface RepoDao {
         "SELECT * FROM repos WHERE (name LIKE :queryString) OR (description LIKE " +
                 ":queryString) ORDER BY stars DESC, name ASC"
     )
-    fun reposByName(queryString: String): LiveData<List<Repo>>
+    fun reposByName(queryString: String): DataSource.Factory<Int, Repo>
 }

@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.unokim.codelab.paging.data.GithubRepository
 import com.unokim.codelab.paging.model.Repo
 import com.unokim.codelab.paging.model.RepoSearchResult
@@ -39,7 +40,7 @@ class SearchRepositoriesViewModel(private val repository: GithubRepository) : Vi
         repository.search(it)
     }
 
-    val repos: LiveData<List<Repo>> = Transformations.switchMap(repoResult) { it -> it.data }
+    val repos: LiveData<PagedList<Repo>> = Transformations.switchMap(repoResult) { it -> it.data }
     val networkErrors: LiveData<String> = Transformations.switchMap(repoResult) { it ->
         it.networkErrors
     }
@@ -51,14 +52,15 @@ class SearchRepositoriesViewModel(private val repository: GithubRepository) : Vi
         queryLiveData.postValue(queryString)
     }
 
-    fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
-        if (visibleItemCount + lastVisibleItemPosition + VISIBLE_THRESHOLD >= totalItemCount) {
-            val immutableQuery = lastQueryValue()
-            if (immutableQuery != null) {
-                repository.requestMore(immutableQuery)
-            }
-        }
-    }
+//    fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
+//        if (visibleItemCount + lastVisibleItemPosition + VISIBLE_THRESHOLD >= totalItemCount) {
+//            val immutableQuery = lastQueryValue()
+//            if (immutableQuery != null) {
+//                Timber.d("listScrolled, requestMore($immutableQuery)")
+//                repository.requestMore(immutableQuery)
+//            }
+//        }
+//    }
 
     /**
      * Get the last query value.
