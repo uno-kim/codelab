@@ -1,4 +1,5 @@
 include ':main',
+        ':clippingexample',
         ':minipaint',
         ':todousecases',
         ':todo',
