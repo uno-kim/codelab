@@ -19,7 +19,6 @@ package com.unokim.codelab.todo
 import android.app.Application
 import com.unokim.codelab.todo.data.source.TasksRepository
 import timber.log.Timber
-import timber.log.Timber.DebugTree
 
 /**
  * An application that lazily provides a repository. Note that this Service Locator pattern is
@@ -35,6 +34,12 @@ class TodoApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) Timber.plant(DebugTree())
+        if (BuildConfig.DEBUG) {
+            Timber.plant(object : Timber.DebugTree() {
+                override fun createStackElementTag(element: StackTraceElement): String? {
+                    return "uno@" + super.createStackElementTag(element)
+                }
+            })
+        }
     }
 }
