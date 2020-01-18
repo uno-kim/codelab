@@ -1,4 +1,6 @@
-include ':main', ':owl',
+include ':main',
+        ':owl',
+        ':reply',
         ':paging',
         ':clippingexample',
         ':minipaint',
