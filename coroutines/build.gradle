@@ -32,6 +32,12 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force "junit:junit:$junit_version"
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
