@@ -27,7 +27,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.unokim.codelab.devbyteviewer.R
@@ -47,7 +47,7 @@ class DevByteFragment : Fragment() {
      * do in this Fragment.
      */
     private val viewModel: DevByteViewModel by lazy {
-        ViewModelProviders.of(this, DevByteViewModel.Factory(requireActivity().application))
+        ViewModelProvider(this, DevByteViewModel.Factory(requireActivity().application))
             .get(DevByteViewModel::class.java)
     }
 

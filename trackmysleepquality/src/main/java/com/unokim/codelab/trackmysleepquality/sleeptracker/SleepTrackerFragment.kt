@@ -24,7 +24,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -60,7 +60,7 @@ class SleepTrackerFragment : Fragment() {
 
         // Get a reference to the ViewModel associated with this fragment.
         val sleepTrackerViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(SleepTrackerViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(SleepTrackerViewModel::class.java)
         binding.sleepTrackerViewModel = sleepTrackerViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

@@ -30,13 +30,13 @@ import androidx.lifecycle.ViewModelProvider
  *
  * Use the generated factory:
  * ```
- * ViewModelProviders.of(this, FACTORY(argument))
+ * ViewModelProvider(this, FACTORY(argument))
  *
  * ```
  *
  * @param constructor A function (A) -> T that returns an instance of the ViewModel (typically pass
  * the constructor)
- * @return a function of one argument that returns ViewModelProvider.Factory for ViewModelProviders
+ * @return a function of one argument that returns ViewModelProvider.Factory for ViewModelProvider
  */
 fun <T : ViewModel, A> singleArgViewModelFactory(constructor: (A) -> T):
         (A) -> ViewModelProvider.NewInstanceFactory {

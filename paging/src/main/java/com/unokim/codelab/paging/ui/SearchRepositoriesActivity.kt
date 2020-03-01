@@ -23,7 +23,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.unokim.codelab.paging.Injection
@@ -42,7 +42,7 @@ class SearchRepositoriesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search_repositories)
 
         // get the view model
-        viewModel = ViewModelProviders.of(this, Injection.provideViewModelFactory(this))
+        viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(this))
             .get(SearchRepositoriesViewModel::class.java)
 
         // add dividers between RecyclerView's row items

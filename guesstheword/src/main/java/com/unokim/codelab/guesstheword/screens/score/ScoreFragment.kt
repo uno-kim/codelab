@@ -23,7 +23,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.unokim.codelab.guesstheword.R
 import com.unokim.codelab.guesstheword.databinding.ScoreFragmentBinding
@@ -52,7 +52,7 @@ class ScoreFragment : Fragment() {
 
         viewModelFactory =
             ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(requireArguments()).score)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ScoreViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
         // Set the viewmodel for databinding - this allows the bound layout access
         // to all the data in the ViewModel
         binding.scoreViewModel = viewModel
